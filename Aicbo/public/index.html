@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>ZaamMusic — Streaming Musik Online</title>
+<meta name="description" content="ZaamMusic, dengarkan musik apa saja secara gratis. Dibuat oleh Zaam." />
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0a0a0b" />
+<link rel="icon" href="img/icons/icon-192.png" />
+<link rel="apple-touch-icon" href="img/icons/icon-180.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="ZaamMusic" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ============ HEADER (search bar khusus halaman Home) ============ -->
+  <header class="topbar" id="topbar">
+    <div class="topbar-brand" id="brandHome">
+      <span class="logo-dot"></span>
+      <span class="brand-name">ZaamMusic</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="icon-btn" id="goSearchBtn" aria-label="Cari">
+        <svg viewBox="0 0 24 24"><path d="M10.5 3a7.5 7.5 0 105.06 13.06l4.69 4.69a1 1 0 001.41-1.41l-4.69-4.69A7.5 7.5 0 0010.5 3zm-5.5 7.5a5.5 5.5 0 1111 0 5.5 5.5 0 01-11 0z"/></svg>
+      </button>
+      <button class="icon-btn" id="goAboutBtn" aria-label="Tentang ZaamMusic">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm.9 15h-1.8v-6h1.8v6zm0-7.8h-1.8V7.4h1.8v1.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="views">
+
+    <!-- ============ VIEW: HOME ============ -->
+    <section class="view active" id="view-home">
+      <div class="pill-row" id="homePills">
+        <button class="pill active" data-filter="all">Semua</button>
+        <button class="pill" data-filter="musik">Musik</button>
+        <button class="pill" data-filter="baru">Rilis Baru</button>
+      </div>
+
+      <div id="homeContent" class="home-content">
+        <div class="skeleton-shelves" id="homeSkeleton">
+          <div class="skeleton-title"></div>
+          <div class="skeleton-row">
+            <div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>
+          </div>
+          <div class="skeleton-title"></div>
+          <div class="skeleton-row">
+            <div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VIEW: SEARCH ============ -->
+    <section class="view" id="view-search">
+      <div class="add-mode-banner" id="addModeBanner" hidden>
+        <span id="addModeText">Menambahkan ke playlist</span>
+        <button class="add-mode-done" id="addModeDoneBtn">Selesai</button>
+      </div>
+      <div class="search-box-wrap">
+        <div class="section-eyebrow">Cari Musik</div>
+        <div class="search-box">
+          <svg id="searchGoBtn" viewBox="0 0 24 24"><path d="M10.5 3a7.5 7.5 0 105.06 13.06l4.69 4.69a1 1 0 001.41-1.41l-4.69-4.69A7.5 7.5 0 0010.5 3zm-5.5 7.5a5.5 5.5 0 1111 0 5.5 5.5 0 01-11 0z"/></svg>
+          <input id="searchInput" type="text" placeholder="Apa yang ingin kamu dengarkan?" autocomplete="off" enterkeyhint="search" />
+        </div>
+      </div>
+      <div class="search-tabs" id="searchTabs" hidden>
+        <button class="pill active" data-mode="all">Semua</button>
+        <button class="pill" data-mode="songs">Lagu</button>
+        <button class="pill" data-mode="artists">Artis</button>
+      </div>
+      <div id="searchBrowse" class="quick-grid"></div>
+      <div id="searchResults" class="search-results"></div>
+    </section>
+
+    <!-- ============ VIEW: LIBRARY (Koleksi Kamu) ============ -->
+    <section class="view" id="view-library">
+      <div class="library-header">
+        <div class="lib-title-row">
+          <div>
+            <div class="section-eyebrow">Perpustakaan Pribadi</div>
+            <h1>Koleksi Kamu</h1>
+          </div>
+        </div>
+        <div class="lib-header-actions">
+          <button class="icon-btn" id="newPlaylistBtn" aria-label="Buat playlist baru">
+            <svg viewBox="0 0 24 24"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="pill-row">
+        <button class="pill active" data-lib="playlist">Playlist</button>
+        <button class="pill" data-lib="artis">Artis</button>
+      </div>
+      <div id="libraryContent" class="library-content"></div>
+    </section>
+
+    <!-- ============ VIEW: ARTIST ============ -->
+    <section class="view" id="view-artist">
+      <div id="artistContent" class="artist-content"></div>
+    </section>
+
+    <!-- ============ VIEW: LYRICS (Lirik lagu tersinkron) ============ -->
+    <section class="view" id="view-lyrics">
+      <button class="back-btn" data-back="true">
+        <svg viewBox="0 0 24 24"><path d="M15.5 4.5L8 12l7.5 7.5 1.4-1.4L10.8 12l6.1-6.1z"/></svg>
+        Kembali
+      </button>
+      <div class="lyrics-page">
+        <div class="lyrics-page-header">
+          <img id="lyricsCover" class="lyrics-cover" src="" alt="" />
+          <div class="lyrics-meta">
+            <div class="lyrics-title" id="lyricsTitle">—</div>
+            <div class="lyrics-artist" id="lyricsArtist">—</div>
+          </div>
+        </div>
+        <div class="lyrics-offset" id="lyricsOffset" hidden>
+          <button type="button" id="lyricsOffsetEarlier" title="Majukan lirik (lirik terasa lambat dari musik)">‹ Lebih awal</button>
+          <span id="lyricsOffsetValue">Sinkron</span>
+          <button type="button" id="lyricsOffsetLater" title="Undurkan lirik (lirik terasa cepat dari musik)">Lebih lambat ›</button>
+        </div>
+        <div class="lyrics-body" id="lyricsBody">
+          <div class="empty-state"><p>Memuat lirik...</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VIEW: COLLECTION (Lagu Favorit / 50 Teratas / Playlist) ============ -->
+    <section class="view" id="view-collection">
+      <button class="back-btn" data-back="true">
+        <svg viewBox="0 0 24 24"><path d="M15.5 4.5L8 12l7.5 7.5 1.4-1.4L10.8 12l6.1-6.1z"/></svg>
+        Kembali
+      </button>
+      <div id="collectionContent" class="artist-content"></div>
+    </section>
+
+    <!-- ============ VIEW: ABOUT (Tentang ZaamMusic & Zaam) ============ -->
+    <section class="view" id="view-about">
+      <button class="back-btn" data-back="true">
+        <svg viewBox="0 0 24 24"><path d="M15.5 4.5L8 12l7.5 7.5 1.4-1.4L10.8 12l6.1-6.1z"/></svg>
+        Kembali
+      </button>
+      <div class="about-content">
+        <div class="about-hero">
+          <div class="about-logo"><img src="img/about-avatar.jpg" alt="ZaamMusic" /></div>
+          <h1>ZaamMusic</h1>
+          <p class="about-tag">Musik apa saja, kapan saja — gratis, tanpa ribet.</p>
+        </div>
+
+        <div class="about-card info-card">
+          <div class="info-card-head"><span>Aplikasi</span></div>
+          <div class="info-row"><span class="info-label">Nama</span><span class="info-value">ZaamMusic</span></div>
+          <div class="info-row"><span class="info-label">Versi</span><span class="info-value">1.0</span></div>
+          <div class="info-row"><span class="info-label">Framework</span><span class="info-value">HTML + CSS + JS</span></div>
+          <div class="info-row"><span class="info-label">Hosting</span><span class="info-value">Netlify</span></div>
+        </div>
+
+        <div class="about-card info-card">
+          <div class="info-card-head"><span>Developer</span></div>
+          <div class="info-row"><span class="info-label">Developed by</span><span class="info-value">@Zaam</span></div>
+        </div>
+
+        <button class="about-action-btn" id="installPwaBtn" hidden>
+          <svg viewBox="0 0 24 24"><path d="M12 3v10.6l3.3-3.3 1.4 1.4L12 17l-4.7-5.3 1.4-1.4 3.3 3.3V3h0zM5 19h14v2H5v-2z"/></svg>
+          Install Aplikasi
+        </button>
+
+        <a class="about-action-btn about-action-btn--wa" id="chatDeveloperBtn" href="https://wa.me/62895629274759" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.1-1.3A10 10 0 1012 2zm5.9 14.3c-.3.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3.1s.8-2.2 1.1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5.2.5.7 1.8.8 1.9.1.2.1.3 0 .5-.1.2-.1.3-.3.5-.1.2-.3.4-.4.5-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.5 1.5.3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1.2.1 1.5.7 1.8.8.3.1.4.2.5.3.1.2.1.9-.2 1.6z"/></svg>
+          Chat Developer
+        </a>
+
+        <p class="about-footer">ZaamMusic v1.0 · Dibuat dengan ♥ oleh Zaam</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ MINI PLAYER ============ -->
+  <div class="mini-player" id="miniPlayer" hidden>
+    <div class="mini-progress"><div class="mini-progress-fill" id="miniProgressFill"></div></div>
+    <div class="mini-player-inner">
+      <img id="miniCover" class="mini-cover" src="" alt="" />
+      <div class="mini-meta" id="miniMeta">
+        <div class="mini-title" id="miniTitle">—</div>
+        <div class="mini-artist" id="miniArtist">—</div>
+      </div>
+      <button class="icon-btn" id="miniLikeBtn" aria-label="Simpan lagu">
+        <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.6 8.4 2 5 5.4 4.2 7.7 3.7 10 4.8 12 7c2-2.2 4.3-3.3 6.6-2.8C22 5 23.4 8.4 22 11.7 19.5 16.4 12 21 12 21z"/></svg>
+      </button>
+      <button class="icon-btn play-btn" id="miniPlayBtn" aria-label="Putar / Jeda">
+        <svg id="miniPlayIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ FULL "NOW PLAYING" SCREEN ============ -->
+  <div class="now-playing" id="nowPlaying" aria-hidden="true">
+    <div class="np-bg" id="npBg"></div>
+    <div class="np-inner">
+      <div class="np-header">
+        <button class="icon-btn np-collapse" id="npCollapseBtn" aria-label="Tutup">
+          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6H6z"/></svg>
+        </button>
+        <div class="np-heading">
+          <span class="np-eyebrow">MEMUTAR SEKARANG</span>
+          <span class="np-source" id="npSource">—</span>
+        </div>
+        <button class="icon-btn" id="npShareBtn" aria-label="Bagikan lagu">
+          <svg viewBox="0 0 24 24"><path d="M18 16.1c-.76 0-1.44.3-1.96.77L8.9 12.7a2.3 2.3 0 000-1.4l7.05-4.11c.54.5 1.24.81 2.05.81a3 3 0 10-3-3c0 .24.03.48.09.7L7.95 9.8A3 3 0 103 12a3 3 0 003 3c0-.01 0-.01 0 0l7.09 4.15c-.03.2-.06.4-.06.6a3 3 0 103-3.65z"/></svg>
+        </button>
+      </div>
+
+      <div class="np-art-wrap">
+        <img id="npCover" class="np-cover" src="" alt="" />
+      </div>
+
+      <div class="np-meta">
+        <div class="np-title-row">
+          <div class="np-titles">
+            <div class="np-title" id="npTitle">—</div>
+            <div class="np-artist" id="npArtist">—</div>
+          </div>
+          <div class="np-title-actions">
+            <button class="icon-btn" id="npLikeBtn" aria-label="Simpan lagu">
+              <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.3C.6 8.4 2 5 5.4 4.2 7.7 3.7 10 4.8 12 7c2-2.2 4.3-3.3 6.6-2.8C22 5 23.4 8.4 22 11.7 19.5 16.4 12 21 12 21z"/></svg>
+            </button>
+            <button class="icon-btn" id="npDownloadBtn" aria-label="Unduh untuk offline">
+              <svg viewBox="0 0 24 24"><path d="M12 3v10.6l3.3-3.3 1.4 1.4L12 17l-4.7-5.3 1.4-1.4 3.3 3.3V3h0zM5 19h14v2H5v-2z"/></svg>
+            </button>
+            <button class="icon-btn" id="npAddBtn" aria-label="Tambah ke playlist">
+              <svg viewBox="0 0 24 24"><path d="M15 6H3v2h12V6zm0 4H3v2h12v-2zM3 16h8v-2H3v2zm15-4v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="np-progress-wrap">
+        <input type="range" id="npSeek" class="np-seek" min="0" max="1000" value="0" />
+        <div class="np-time-row">
+          <span id="npCurTime">0:00</span>
+          <span id="npDurTime">0:00</span>
+        </div>
+      </div>
+
+      <div class="np-controls">
+        <button class="np-ctrl-btn" id="npShuffleBtn" aria-label="Acak">
+          <svg viewBox="0 0 24 24"><path d="M17 3h4v4h-2V6.4l-3.6 3.6-1.4-1.4L17.6 5H17V3zM3 5h5.3l7.4 7.4L20 8.2V10h-2v-.2l-1.7 1.7L21 17H17v-2h.6l-3.6-3.6L4 21H3v-2h.6L14 8.6 8.9 3.5H7v2H3V5zm0 14v-2h4v2H3z"/></svg>
+        </button>
+        <button class="np-ctrl-btn" id="npPrevBtn" aria-label="Sebelumnya">
+          <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+        </button>
+        <button class="np-play-btn" id="npPlayBtn" aria-label="Putar / Jeda">
+          <svg id="npPlayIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button class="np-ctrl-btn" id="npNextBtn" aria-label="Berikutnya">
+          <svg viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 6v12l8.5-6z"/></svg>
+        </button>
+        <button class="np-ctrl-btn" id="npTimerBtn" aria-label="Timer tidur">
+          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm.75 5v5.4l4.2 2.5-.75 1.3L11 13V7h1.75z"/></svg>
+        </button>
+      </div>
+
+      <div class="np-bottom-actions">
+        <button class="np-artist-btn" id="npArtistBtn">
+          Lihat Artis
+          <svg viewBox="0 0 24 24"><path d="M8.5 4.5L16 12l-7.5 7.5-1.4-1.4L13.2 12 7.1 5.9z"/></svg>
+        </button>
+        <button class="np-artist-btn" id="npLyricsBtn">
+          Lirik
+          <svg viewBox="0 0 24 24"><path d="M4 4h13l3 3v13H4V4zm2 2v14h12V7.8L15.2 6H6zm2 4h9v2H8v-2zm0 4h9v2H8v-2zm0-8h5v2H8V6z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Sleep timer popover -->
+    <div class="np-popover" id="timerPopover" hidden>
+      <div class="np-popover-title">Timer Tidur</div>
+      <button class="np-popover-item" data-timer="5">5 menit</button>
+      <button class="np-popover-item" data-timer="15">15 menit</button>
+      <button class="np-popover-item" data-timer="30">30 menit</button>
+      <button class="np-popover-item" data-timer="45">45 menit</button>
+      <button class="np-popover-item" data-timer="60">60 menit</button>
+      <button class="np-popover-item np-popover-off" data-timer="0">Matikan Timer</button>
+    </div>
+  </div>
+
+  <!-- ============ ADD-TO-PLAYLIST SHEET ============ -->
+  <div class="modal-backdrop" id="addToPlaylistModal" hidden>
+    <div class="modal-card">
+      <h2>Tambah ke Playlist</h2>
+      <div id="addToPlaylistList" class="add-playlist-list"></div>
+      <button class="modal-new-pl-btn" id="createFromAddBtn">+ Buat Playlist Baru</button>
+      <div class="modal-actions">
+        <button class="modal-btn" id="addToPlaylistCloseBtn">Selesai</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ CREATE / EDIT PLAYLIST MODAL ============ -->
+  <div class="modal-backdrop" id="playlistModal" hidden>
+    <div class="modal-card">
+      <h2 id="playlistModalTitle">Buat Playlist</h2>
+      <div class="modal-cover-picker" id="modalCoverPicker">
+        <img id="modalCoverPreview" src="" alt="" hidden />
+        <span id="modalCoverPlaceholder">🖼️<br/>Ketuk untuk<br/>pilih foto</span>
+      </div>
+      <input type="file" id="modalCoverFileInput" accept="image/*" hidden />
+      <input type="text" id="modalPlaylistName" placeholder="Nama playlist" maxlength="40" class="modal-input" />
+      <div class="modal-actions">
+        <button class="modal-btn ghost" id="modalCancelBtn">Batal</button>
+        <button class="modal-btn primary" id="modalSaveBtn">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ GENERIC PROMPT / CONFIRM MODAL (ganti dialog bawaan browser) ============ -->
+  <div class="modal-backdrop" id="genericModal" hidden>
+    <div class="modal-card">
+      <h2 id="genericModalTitle">—</h2>
+      <p class="generic-modal-msg" id="genericModalMsg"></p>
+      <input type="text" id="genericModalInput" class="modal-input" placeholder="" hidden />
+      <div class="modal-actions">
+        <button class="modal-btn ghost" id="genericModalCancelBtn">Batal</button>
+        <button class="modal-btn primary" id="genericModalOkBtn">Oke</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TOAST ============ -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ============ ASSISTIVETOUCH FLOATING DASHBOARD ============ -->
+  <!-- Menggantikan bottom-nav: tombol bulat mengambang (bisa digeser bebas)
+       yang saat diketuk membuka menu pop-up 4-arah. Tombol bulat otomatis
+       sembunyi selama menu terbuka, lalu muncul lagi begitu ditutup. -->
+  <div class="assistive-touch" id="touchButton" aria-label="Buka menu navigasi">
+    <div class="touch-inner-circle"></div>
+  </div>
+
+  <div class="touch-menu-overlay" id="touchOverlay">
+    <div class="touch-menu">
+      <button class="menu-item home active" data-view="home">
+        <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3z"/></svg></div>
+        <span>Home</span>
+      </button>
+      <button class="menu-item search" data-view="search">
+        <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M10.5 3a7.5 7.5 0 105.06 13.06l4.69 4.69a1 1 0 001.41-1.41l-4.69-4.69A7.5 7.5 0 0010.5 3zm-5.5 7.5a5.5 5.5 0 1111 0 5.5 5.5 0 01-11 0z"/></svg></div>
+        <span>Cari</span>
+      </button>
+      <button class="menu-item library" data-view="library">
+        <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M3 3h2v18H3V3zm5 4h2v14H8V7zm5-4h2v18h-2V3zm5 8h2v10h-2V11z"/></svg></div>
+        <span>Koleksi</span>
+      </button>
+      <button class="menu-item about" data-view="about">
+        <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm.9 15h-1.8v-6h1.8v6zm0-7.8h-1.8V7.4h1.8v1.8z"/></svg></div>
+        <span>Tentang</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ PLAYER AUDIO-ONLY (iframe YouTube disembunyikan) ============ -->
+  <div id="hiddenPlayerHost" aria-hidden="true"></div>
+
+</div>
+
+<script src="js/player.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

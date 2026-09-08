@@ -1,0 +1,16 @@
+{
+  "name": "zaammusic",
+  "version": "1.0.0",
+  "description": "ZaamMusic - Website streaming musik online oleh Zaam, ditenagai YTMusic API",
+  "private": true,
+  "scripts": {
+    "dev": "netlify dev"
+  },
+  "dependencies": {
+    "node-cache": "^5.1.2",
+    "ytmusic-api": "^5.2.4"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

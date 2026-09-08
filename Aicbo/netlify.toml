@@ -1,0 +1,43 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+  command = "echo 'Tidak ada build step, static + functions'"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["ytmusic-api"]
+
+[[redirects]]
+  from = "/api/home"
+  to = "/.netlify/functions/home"
+  status = 200
+
+[[redirects]]
+  from = "/api/search"
+  to = "/.netlify/functions/search"
+  status = 200
+
+[[redirects]]
+  from = "/api/search-artist"
+  to = "/.netlify/functions/search-artist"
+  status = 200
+
+[[redirects]]
+  from = "/api/ytmp3"
+  to = "/.netlify/functions/ytmp3"
+  status = 200
+
+[[redirects]]
+  from = "/api/lyrics"
+  to = "/.netlify/functions/lyrics"
+  status = 200
+
+[[redirects]]
+  from = "/api/lyrics/:id"
+  to = "/.netlify/functions/lyrics/:id"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 404

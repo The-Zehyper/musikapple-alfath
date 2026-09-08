@@ -1,0 +1,6 @@
+# Apikey untuk sumber lirik tambahan: api.ikyyxd.my.id/search/lyrics
+# Satu apikey per baris. Baris yang diawali '#' atau kosong akan diabaikan.
+# Kalau apikey ini kena limit/mati, cukup tambah baris baru di bawahnya
+# sebagai cadangan — kode akan mencoba satu per satu sampai berhasil,
+# TANPA perlu ubah kode lyrics.js sama sekali.
+kyzz
